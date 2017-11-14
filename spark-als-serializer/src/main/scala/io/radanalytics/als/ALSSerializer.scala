@@ -25,23 +25,19 @@ import collection.JavaConverters._
 
 object ALSSerializer {
 
+  private def unpack(factor: util.ArrayList[Any]): (Int, Array[Double]) = {
+    (factor.get(0).asInstanceOf[Int],
+     factor.get(1).asInstanceOf[util.ArrayList[Double]].asScala.toArray)
+  }
+
   def instantiateModel(sc: JavaSparkContext,
                        rank: Int,
                        userFactors: util.ArrayList[util.ArrayList[Any]],
                        productFactors: util.ArrayList[util.ArrayList[Any]])
     : MatrixFactorizationModel = {
 
-    val u = userFactors.asScala.map(
-      factor =>
-        (factor.get(0).asInstanceOf[Int],
-         factor.get(1).asInstanceOf[util.ArrayList[Double]].asScala.toArray))
-    val p = productFactors.asScala.toList.map(
-      factor =>
-        (factor.get(0).asInstanceOf[Int],
-         factor.get(1).asInstanceOf[util.ArrayList[Double]].asScala.toArray))
-
-    val userRDD = sc.parallelize(u)
-    val productRDD = sc.parallelize(p)
+    val userRDD = sc.parallelize(userFactors.asScala.map(unpack))
+    val productRDD = sc.parallelize(productFactors.asScala.toList.map(unpack))
 
     new MatrixFactorizationModel(rank = rank,
                                  userFeatures = userRDD,
