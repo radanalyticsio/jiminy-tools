@@ -6,7 +6,7 @@ loading data into a PostgreSQL database for later usage by the Jiminy project.
 ## Quickstart
 
 The easiest way to utilize these modules for loading a database is by
-creating a virtual environment using thei
+creating a virtual environment using the
 [virtualenv](https://pypi.python.org/pypi/virtualenv) tool.
 
 after activating the virtual environment, you will need to install the
