@@ -1,5 +1,7 @@
 """helper functions to load movielens data"""
 import csv
+import urllib
+import zipfile
 
 
 def create_table(connection, tablequery):
@@ -96,4 +98,5 @@ def download_and_unzip_dataset(url, path):
     """
     dl = urllib.urlretrieve(url)
     zf = zipfile.ZipFile(dl[0])
-    zf.extracall(path)
+    zf.extractall(path)
+    return zf
