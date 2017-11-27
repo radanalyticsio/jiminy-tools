@@ -32,6 +32,34 @@ for more information about the options and defaults run this:
 **WARNING: the ratings files can be quite large and will take time to load,
     like 10-15 minutes**
 
+## Running with Docker
+
+This application can be built as a container image and run with docker. To
+start create the image using the
+[S2I](https://github.com/openshift/source-to-image) tool, as follows:
+
+```
+s2i build https://github.com/radanalyticsio/jiminy-tools.git \
+    centos/python-27-centos7 \
+    --context-dir=data-store-loader
+```
+
+Next launch a postgres container, for example:
+
+```
+docker run --name movie-postgres -d -p 5432:5432 docker.io/postgres
+```
+
+Finally, run the loader to load a dataset into the database. *(note: for this
+example we are using the movielens small set)*
+
+```
+docker run --link movie-postgres \
+    -e DB_HOST=movie-postgres \
+    -e DATASET_URL=http://files.grouplens.org/datasets/movielens/ml-latest-small.zip \
+    data-store-loader
+```
+
 ## Files
 
 ### app.py
