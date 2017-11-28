@@ -1,0 +1,52 @@
+kind: Template
+apiVersion: v1
+template: jiminy-data-store-loader
+metadata:
+  name: jiminy-data-store-loader
+objects:
+
+- kind: Job
+  apiVersion: batch/v1
+  metadata:
+    name: jiminy-data-store-loader
+  spec:
+    parallelism: 1
+    completions: 1
+    template:
+      metadata:
+        name: jiminy-data-store-loader
+      spec:
+        containers:
+          - name: jiminy-data-store-loader
+            image: docker.io/elmiko/data-store-loader
+            env:
+              - name: DB_HOST
+                value: ${DB_HOST}
+              - name: DB_PORT
+                value: ${DB_PORT}
+              - name: DB_USER
+                value: ${DB_USER}
+              - name: DB_PASSWORD
+                value: ${DB_PASSWORD}
+              - name: DB_DBNAME
+                value: ${DB_DBNAME}
+              - name: DATASET_URL
+                value: ${DATASET_URL}
+        restartPolicy: OnFailure
+
+parameters:
+  - name: DB_HOST
+    description: the hostname of the database server
+    required: true
+  - name: DATASET_URL
+    description: the url to the dataset zip file
+    required: true
+  - name: DB_PORT
+    description: port for the database server
+  - name: DB_USER
+    description: user for the database server
+  - name: DB_PASSWORD
+    description: password to access the database server
+  - name: DB_DBNAME
+    description: database name to load with data
+
