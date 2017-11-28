@@ -8,13 +8,13 @@ objects:
 - kind: Job
   apiVersion: batch/v1
   metadata:
-    name: jiminy-data-store-loader
+    name: ${JOB_NAME}
   spec:
     parallelism: 1
     completions: 1
     template:
       metadata:
-        name: jiminy-data-store-loader
+        name: ${JOB_NAME}
       spec:
         containers:
           - name: jiminy-data-store-loader
@@ -22,8 +22,6 @@ objects:
             env:
               - name: DB_HOST
                 value: ${DB_HOST}
-              - name: DB_PORT
-                value: ${DB_PORT}
               - name: DB_USER
                 value: ${DB_USER}
               - name: DB_PASSWORD
@@ -41,12 +39,14 @@ parameters:
   - name: DATASET_URL
     description: the url to the dataset zip file
     required: true
-  - name: DB_PORT
-    description: port for the database server
   - name: DB_USER
     description: user for the database server
   - name: DB_PASSWORD
     description: password to access the database server
   - name: DB_DBNAME
     description: database name to load with data
+  - name: JOB_NAME
+    from: "jdsl-[a-z0-9]{4}"
+    generate: expression
+    description: unique name for this job run
 
