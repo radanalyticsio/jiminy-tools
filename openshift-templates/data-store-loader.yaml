@@ -18,7 +18,7 @@ objects:
       spec:
         containers:
           - name: jiminy-data-store-loader
-            image: docker.io/elmiko/data-store-loader
+            image: docker.io/elmiko/jiminy-data-store-loader
             env:
               - name: DB_HOST
                 value: ${DB_HOST}
