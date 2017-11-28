@@ -7,7 +7,7 @@ import jsonschema as js
 app = flask.Flask(__name__)
 api = flaskr.Api(app)
 
-datastore = {}
+ratings_store = {}
 
 class ServerInfo(flaskr.Resource):
     def get(self):
@@ -19,7 +19,7 @@ class ServerInfo(flaskr.Resource):
             }
 
 
-prediction_request_schema = {
+rating_request_schema = {
     "type": "object",
     "properties": {
         "user": {"type": "string"},
@@ -33,17 +33,17 @@ prediction_request_schema = {
     }
 
 
-class Predictions(flaskr.Resource):
+class RatingsPredictions(flaskr.Resource):
     def post(self):
         data = flask.request.json
         try:
-            js.validate(data, prediction_request_schema)
+            js.validate(data, rating_request_schema)
             resp = {
-                    "id": str(len(datastore) + 1),
+                    "id": str(len(ratings_store) + 1),
                     "user" : data["user"],
                     "products": [p for p in data["products"]]
                 }
-            datastore[resp["id"]] = {
+            ratings_store[resp["id"]] = {
                     "id": resp["id"],
                     "user" : resp["user"],
                     "products": [
@@ -62,9 +62,9 @@ class Predictions(flaskr.Resource):
                     }, 400
 
 
-class PredictionResponse(flaskr.Resource):
+class RatingsPredictionResponse(flaskr.Resource):
     def get(self, p_id):
-        if str(p_id) not in datastore:
+        if str(p_id) not in ratings_store:
             return {
                     "errors": [
                         {
@@ -75,12 +75,12 @@ class PredictionResponse(flaskr.Resource):
                             }
                         ]
                 }, 404
-        return datastore[p_id]
+        return ratings_store[p_id]
 
 
 
 if __name__ == '__main__':
     api.add_resource(ServerInfo, '/')
-    api.add_resource(Predictions, '/predictions')
-    api.add_resource(PredictionResponse, '/predictions/<p_id>')
+    api.add_resource(RatingsPredictions, '/predictions/ratings')
+    api.add_resource(RatingsPredictionResponse, '/predictions/ratings/<p_id>')
     app.run(debug=True)
