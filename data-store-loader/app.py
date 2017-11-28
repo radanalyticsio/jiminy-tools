@@ -26,16 +26,20 @@ def build_connection(args):
     return conn
 
 
+def get_arg(env, default):
+    return os.getenv(env) if os.getenv(env) is not '' else default
+
+
 def parse_args(parser):
     args = parser.parse_args()
-    args.host = os.getenv('DB_HOST', args.host)
-    args.port = os.getenv('DB_PORT', args.port)
-    args.user = os.getenv('DB_USER', args.user)
-    args.password = os.getenv('DB_PASSWORD', args.password)
-    args.dbname = os.getenv('DB_DBNAME', args.dbname)
-    args.movies = os.getenv('MOVIES_CSV', args.movies)
-    args.ratings = os.getenv('RATINGS_CSV', args.ratings)
-    args.dataset = os.getenv('DATASET_URL', args.dataset)
+    args.host = get_arg('DB_HOST', args.host)
+    args.port = get_arg('DB_PORT', args.port)
+    args.user = get_arg('DB_USER', args.user)
+    args.password = get_arg('DB_PASSWORD', args.password)
+    args.dbname = get_arg('DB_DBNAME', args.dbname)
+    args.movies = get_arg('MOVIES_CSV', args.movies)
+    args.ratings = get_arg('RATINGS_CSV', args.ratings)
+    args.dataset = get_arg('DATASET_URL', args.dataset)
     return args
 
 
