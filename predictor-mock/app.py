@@ -142,4 +142,4 @@ if __name__ == '__main__':
     api.add_resource(RatingsPredictionResponse, '/predictions/ratings/<p_id>')
     api.add_resource(RankingsPredictions, '/predictions/ranks')
     api.add_resource(RankingsPredictionResponse, '/predictions/ranks/<p_id>')
-    app.run(debug=True)
+    app.run(debug=True, port=8080)

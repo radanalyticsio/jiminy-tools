@@ -17,7 +17,14 @@ to run the server simply start it with the following:
 
     python app.py
 
-it will now be running on `127.0.0.1:5000`, you may interact with it using
+it will now be running on `127.0.0.1:8080`, you may interact with it using
 the api defined by
 [this openapi definition](https://github.com/radanalyticsio/jiminy-predictor/blob/master/docs/openapi.yaml)
 
+## OpenShift deploy
+
+To run this mock service on OpenShift, simply use the following command:
+
+```
+oc new-app centos/python-27-centos7~https://github.com/radanalyticsio/jiminy-tools --context-dir=predictor-mock --name=predictor-mock
+```
