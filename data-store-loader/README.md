@@ -41,7 +41,8 @@ start create the image using the
 ```
 s2i build https://github.com/radanalyticsio/jiminy-tools.git \
     centos/python-27-centos7 \
-    --context-dir=data-store-loader
+    --context-dir=data-store-loader \
+    data-store-loader
 ```
 
 Next launch a postgres container, for example:
