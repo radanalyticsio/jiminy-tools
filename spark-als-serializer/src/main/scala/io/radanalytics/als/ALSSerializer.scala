@@ -19,29 +19,30 @@
 package io.radanalytics.als
 
 import java.util
-import org.apache.spark.api.java.JavaSparkContext
+
+import org.apache.spark.api.java.JavaRDD
 import org.apache.spark.mllib.recommendation.MatrixFactorizationModel
-import collection.JavaConverters._
+
+import scala.collection.JavaConverters._
 
 object ALSSerializer {
 
-  private def unpack(factor: util.ArrayList[Any]): (Int, Array[Double]) = {
-    (factor.get(0).asInstanceOf[Int],
-     factor.get(1).asInstanceOf[util.ArrayList[Double]].asScala.toArray)
+  private def unpack(factor: Array[Any]): (Int, Array[Double]) = {
+    (factor(0).asInstanceOf[Int],
+      factor(1).asInstanceOf[util.ArrayList[Double]].asScala.toArray)
   }
 
-  def instantiateModel(sc: JavaSparkContext,
-                       rank: Int,
-                       userFactors: util.ArrayList[util.ArrayList[Any]],
-                       productFactors: util.ArrayList[util.ArrayList[Any]])
-    : MatrixFactorizationModel = {
+  def instantiateModel(rank: Int,
+                      userFactors: JavaRDD[Array[Any]],
+                      productFactors: JavaRDD[Array[Any]]): MatrixFactorizationModel = {
 
-    val userRDD = sc.parallelize(userFactors.asScala.map(unpack))
-    val productRDD = sc.parallelize(productFactors.asScala.toList.map(unpack))
+    val userRDD = userFactors.rdd.map(unpack)
+
+    val productRDD = productFactors.rdd.map(unpack)
 
     new MatrixFactorizationModel(rank = rank,
-                                 userFeatures = userRDD,
-                                 productFeatures = productRDD)
+      userFeatures = userRDD,
+      productFeatures = productRDD)
 
   }
 
