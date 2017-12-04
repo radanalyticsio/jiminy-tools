@@ -72,8 +72,8 @@ def create_ratings_table(connection):
     connection -- a postgresql connection object
     """
     table_sql = 'create table ' \
-                'ratings(userId integer, movieId integer, ' \
-                'rating real, timestamp integer)'
+                'ratings(id serial primary key, userId integer, movieId integer, ' \
+                'rating real, timestamp integer) '
     create_table(connection, table_sql)
 
 
