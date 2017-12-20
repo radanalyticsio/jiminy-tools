@@ -35,14 +35,11 @@ for more information about the options and defaults run this:
 ## Running with Docker
 
 This application can be built as a container image and run with docker. To
-start create the image using the
-[S2I](https://github.com/openshift/source-to-image) tool, as follows:
+start create the image using the following command in the `data-store-loader`
+directory:
 
 ```
-s2i build https://github.com/radanalyticsio/jiminy-tools.git \
-    centos/python-27-centos7 \
-    --context-dir=data-store-loader \
-    data-store-loader
+docker -t data-store-loader .
 ```
 
 Next launch a postgres container, for example:
