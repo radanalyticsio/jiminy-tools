@@ -1,8 +1,8 @@
 kind: Template
 apiVersion: v1
-template: jiminy-data-store-loader
+template: jiminy-data-loader
 metadata:
-  name: jiminy-data-store-loader
+  name: jiminy-data-loader
 objects:
 
 - kind: Job
@@ -17,8 +17,8 @@ objects:
         name: ${JOB_NAME}
       spec:
         containers:
-          - name: jiminy-data-store-loader
-            image: docker.io/elmiko/jiminy-data-store-loader
+          - name: jiminy-data-loader
+            image: docker.io/radanalyticsio/jiminy-data-loader
             env:
               - name: DB_HOST
                 value: ${DB_HOST}
