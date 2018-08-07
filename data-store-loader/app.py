@@ -126,7 +126,9 @@ if __name__ == '__main__':
     if movies_csv is not None:
         logging.info('loading products table')
         movielens.load_products_data(conn, movies_csv)
+        logging.info('loaded products table')
 
     if ratings_csv is not None:
         logging.info('loading ratings table')
         movielens.load_ratings_data(conn, ratings_csv)
+        logging.info('loaded ratings table')
